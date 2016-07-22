@@ -18,15 +18,7 @@ function FormSrvc(RESTSrvc) {
         return RESTSrvc.getPromise( {method: 'PUT', url: RESTWebApp.appName + '/form/object/' + formType + '/' + id, data: form, headers: {'Authorization' : baseAuthToken} });
       },
     // get form object
-    getForm: 
-      function(id, formType, baseAuthToken) {
-        return RESTSrvc.getPromise( {method: 'GET', url: RESTWebApp.appName + '/form/object/' + formType + '/' + id, headers: {'Authorization' : baseAuthToken} });
-      },
-    getFormStatuses: 
-      function(formType, baseAuthToken) {
-        return RESTSrvc.getPromise( {method: 'GET', url: RESTWebApp.appName + '/form/objects/' + formType + '/mine', headers: {'Authorization' : baseAuthToken} });
-      },
-    getFormMetadata: 
+    getFormMetadata:
       function(formType, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'GET', url: RESTWebApp.appName + '/form/info/' + formType, headers: {'Authorization' : baseAuthToken} });
       },
@@ -49,10 +41,9 @@ function FormSrvc(RESTSrvc) {
     deleteObject:
       function(formType, objectId, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'DELETE', url: RESTWebApp.appName + '/form/object/' + formType + '/' + objectId, headers: {'Authorization' : baseAuthToken} });
-      },
+      }
   }
-};
-
+}
 // resolving minification problems
 FormSrvc.$inject = ['RESTSrvc'];
 servicesModule.factory('FormSrvc', FormSrvc);

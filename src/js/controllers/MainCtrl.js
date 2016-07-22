@@ -57,7 +57,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 
     $s.closeObject = function() {
         $s.$broadcast('closeObject');
-    }
+    };
 
     /// Goes to specified state
     main.goState = function(state) {
@@ -90,12 +90,6 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 
                 $s.$broadcast('login', data);
                 $state.go('forms', {}, { reload: true, inherit: false, notify: true });
-                return SessionSrvc.getUser(main.authToken)
-            })
-            .then(function(data) {
-                if (data && data.User) {
-                    main.user = data.User;
-                }
             })
             .catch(function(err) {
                 $s.loginError = true;
@@ -124,17 +118,17 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
-                alert('Непредвиденная ошибка, обратитесь к администратору /n' + errorText);
+                alert('An unexpected error occurred, contact your administrator /n' + errorText);
             });
-    }
+    };
 
     main.logout = function() {
         $s.$broadcast('logout');
-    }
+    };
 
     main.goMain = function() {
         $s.$broadcast('goMain');
-    }
+    };
 
     main.dataInit = function() {
         $s.$broadcast('refresh');
@@ -145,14 +139,9 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 ===============================================================*/
 
     $s.init = function() {
-        if (!main.loginState) { return };
-
-        SessionSrvc.getUser(main.authToken)
-            .then(function(data) {
-                if (data && data.User) {
-                    main.user = data.User;
-                }
-            });
+        if (!main.loginState) {
+            return
+        }
     };
 
     $s.init();

@@ -17,21 +17,8 @@ function WorklistSrvc(RESTSrvc) {
         },
 
     // get all worklists for current user
-    getAll:
-        function(baseAuthToken) {
-            return RESTSrvc.getPromise( {method: 'GET', url: RESTWebApp.appName + '/tasks', headers: {'Authorization' : baseAuthToken} });
-        },
-    createTask:
-        function(bptype, baseAuthToken) {
-            return RESTSrvc.getPromise( {method: 'GET', url: RESTWebApp.appName + '/createdataentrybp/' + bptype, headers: {'Authorization' : baseAuthToken} });
-        },
-    getObjectsList:
-        function(ids, formType, baseAuthToken) {
-            return RESTSrvc.getPromise( {method: 'POST', url: RESTWebApp.appName + '/form/objects/' + formType + '/info', data: ids, headers: {'Authorization' : baseAuthToken} });
-        }
-  }
-};
-
+    }
+}
 // resolving minification problems
 WorklistSrvc.$inject = ['RESTSrvc'];
 servicesModule.factory('WorklistSrvc', WorklistSrvc);

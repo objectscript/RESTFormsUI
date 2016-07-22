@@ -26,12 +26,7 @@ function UtilSrvc($cookies, $filter) {
 
   return {
     // get cookie by name
-    readCookie: 
-      function(name) {
-        return $cookies[name];
-      },   
-  
-      // Function to get value of property of the object by name
+    // Function to get value of property of the object by name
       // Example: 
       // var obj = {car: {body: {company: {name: 'Mazda'}}}};
       // getPropertyValue(obj, 'car.body.company.name') 
@@ -50,7 +45,7 @@ function UtilSrvc($cookies, $filter) {
             }
           }
           catch(ex) {
-            console.log('Произошла непредвиденная ошибка.');
+            console.log('An unexpected error happened.');
           }
           
           switch (propertyType) {
@@ -86,7 +81,7 @@ function UtilSrvc($cookies, $filter) {
                     var match;
                     // Check for string properties which look like dates.
                     if (typeof value === "string" && (match = value.match(regexIso8601))) {
-                        var milliseconds = Date.parse(match[0])
+                        var milliseconds = Date.parse(match[0]);
                         if (!isNaN(milliseconds)) {
                             input[key] = new Date(milliseconds);
                         }
@@ -117,8 +112,7 @@ function UtilSrvc($cookies, $filter) {
                 }
             }
   }
-};
-
+}
 // resolving minification problems
 UtilSrvc.$inject = ['$cookies', '$filter'];
 servicesModule.factory('UtilSrvc', UtilSrvc);

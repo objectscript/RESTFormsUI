@@ -99,7 +99,7 @@ app.directive('ngCustomField', function ($compile) {
                 return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
                             '<label>' + field.displayName + '</label>' +
                             '<div class="ui input" style="vertical-align: top;">' +
-                                '<input name="' + field.name + '" type="number" ' + ((!field.readonly) ? 'placeholder="Введите числовое значение"' : '') + ' ng-model="obj[\'' + field.name + '\']">' +
+                                '<input name="' + field.name + '" type="number" ' + ((!field.readonly) ? 'placeholder="Enter a numeric value"' : '') + ' ng-model="obj[\'' + field.name + '\']">' +
                             '</div>' +
                        '</div>';
             case '%Library.String':
@@ -107,7 +107,7 @@ app.directive('ngCustomField', function ($compile) {
                     return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
                                 '<label>' + field.displayName + '</label>' +
                                 '<div class="ui input" style="vertical-align: top;">' +
-                                    '<input name="' + field.name + '" type="text" ' + ((!field.readonly) ? 'placeholder="Введите текст"' : '') + ' ng-model="obj[\'' + field.name + '\']">' +
+                                    '<input name="' + field.name + '" type="text" ' + ((!field.readonly) ? 'placeholder="Enter text"' : '') + ' ng-model="obj[\'' + field.name + '\']">' +
                                 '</div>' +
                            '</div>';
                 } else {
@@ -115,7 +115,7 @@ app.directive('ngCustomField', function ($compile) {
                         return '<div class="ui eight wide' + ((field.required) ? ' required' : '') + ' field">' +
                                     '<label>' + field.displayName + '</label>' +
                                     '<select name="' + field.name + '" class="ui dropdown" ng-model="obj[\'' + field.name + '\']">' +
-                                        '<option value="" disabled selected hidden>Выберите значение</option>' +
+                                        '<option value="" disabled selected hidden>Choose a value</option>' +
                                         '<option value="{{val}}" ng-repeat="val in field.valueList">{{field.displayList[$index]}}</option>' +
                                     '</select>' +
                                '</div>';
@@ -133,7 +133,7 @@ app.directive('ngCustomField', function ($compile) {
                     return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
                                 '<label>' + field.displayName + '</label>' +
                                 '<div class="ui input" style="vertical-align: top;">' +
-                                    '<input name="' + field.name + '" type="date" placeholder="ГГГГ-ММ-ДД" ng-model="obj[\'' + field.name + '\']">' +
+                                    '<input name="' + field.name + '" type="date" placeholder="YYYY-MM-DD" ng-model="obj[\'' + field.name + '\']">' +
                                 '</div>' +
                            '</div>';
                 } else {
@@ -152,7 +152,7 @@ app.directive('ngCustomField', function ($compile) {
                                     '<select name="' + field.name + '" class="ui dropdown" ng-model="obj[\'' + field.name + '\']"' +
                                             ((field.disabled) ? ' disabled' : '') + ((field.required) ? ' required' : '') + ((field.readonly) ? ' disabled' : '') +
                                             ' ng-options="val as val.displayName for val in catalogs[\'' + field.type + '\'] track by val._id">' +
-                                        '<option value="" disabled selected hidden>Выберите значение</option>' +
+                                        '<option value="" disabled selected hidden>Choose a value</option>' +
                                     '</select>' +
                                '</div>';
                     } else {

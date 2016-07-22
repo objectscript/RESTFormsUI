@@ -40,7 +40,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
         return FormSrvc.getCatalog(catalog, main.authToken)
             .then(function(data) {
                 if (!data || !data.children) {
-                    throw {summary: 'Ответ от сервера пуст.'};
+                    throw {summary: 'The server response is empty.'};
                 }
 
                 if ($s.catalogs[catalog] && ($s.catalogs[catalog].length > 0)) { return }
@@ -50,7 +50,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
-                alert('Произошла ошибка при получении списка значений каталога: ' + name + '. \nПожалуйста, обратитесь к администратору.\n' + errorText);
+                alert('An error occurred while receiving the list of directory values: ' + name + '. \nPlease, contact your administrator.\n' + errorText);
             });
     }
 
@@ -59,7 +59,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
         return FormSrvc.getCatalogMeta(catalog, main.authToken)
             .then(function(data) {
                 if (!data) {
-                    throw {summary: 'Ответ от сервера пуст.'};
+                    throw {summary: 'The server response is empty.'};
                 }
 
                 if ($s.catalogsMeta[catalog] && ($s.catalogsMeta[catalog].length > 0)) { return }
@@ -69,7 +69,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
-                alert('Произошла ошибка при получении списка значений каталога: ' + name + '. \nПожалуйста, обратитесь к администратору.\n' + errorText);
+                alert('An error occurred while receiving the list of directory values: ' + name + '. \nPlease, contact your administrator.\n' + errorText);
             });
     }
 
@@ -96,7 +96,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
             return;
         }
 
-        main.confirmationText = 'Вы действительно хотите выйти без сохранения изменений?';
+        main.confirmationText = 'Are you sure you want to logout without saving changes?';
 
         $('#confirmation')
             .modal({
@@ -166,12 +166,12 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
                                 $('#success-dimmer').dimmer('hide');
                             }, 1100);
                         } else {
-                            throw {summary: 'Не удалось сохранить форму. Id: ' + data.Id};
+                            throw {summary: 'Couldn\'t save the form. Id: ' + data.Id};
                         }
                      })
                     .catch(function(err) {
                         var errorText = $s.getErrorText(err);
-                        alert('Непредвиденная ошибка, обратитесь к администратору \n' + errorText);
+                        alert('An unexpected error occurred, contact your administrator \n' + errorText);
                     })
                     .finally(function() {
                         main.hideBusyDimmer();
@@ -191,7 +191,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
                      })
                     .catch(function(err) {
                         var errorText = $s.getErrorText(err);
-                        alert('Непредвиденная ошибка, обратитесь к администратору \n' + errorText);
+                        alert('An unexpected error occurred, contact your administrator \n' + errorText);
                     })
                     .finally(function() {
                         main.hideBusyDimmer();
@@ -207,7 +207,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
             return;
         }
 
-        main.confirmationText = 'Вы действительно хотите выйти без сохранения изменений?';
+        main.confirmationText = 'Are you sure you want to logout without saving changes?';
 
         $('#confirmation')
             .modal({
@@ -228,8 +228,9 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
     // data initialization for Task
     ctrl.init = function() {
 
-        if (!main.loginState) { return };
-
+        if (!main.loginState) {
+            return
+        }
         main.showBusyDimmer();
 
         getFormMetadata($params.form)
@@ -264,7 +265,7 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
-                alert('Непредвиденная ошибка, обратитесь к администратору \n' + errorText);
+                alert('An unexpected error occurred, contact your administrator \n' + errorText);
             })
             .finally(function() {
                 main.hideBusyDimmer();

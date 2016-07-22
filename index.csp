@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Сахалинский областной медицинский информационно-аналитический центр</title>
+        <title>RESTFormsUI</title>
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,18 +25,18 @@
         <div id="confirmation" class="ui basic modal" style="z-index: 1003;">
             <i class="close icon"></i>
             <div class="header">
-                Подтверждение
+                Confirmation
             </div>
 
             <div class="content">
                 <div class="description">
-                <p><i class="checkmark big green icon"></i> <span ng-bind="main.confirmationText || 'Вы действительно хотите продолжить?'"></span></p>
+                <p><i class="checkmark big green icon"></i> <span ng-bind="main.confirmationText || 'Are you sure you want to continue?'"></span></p>
                 </div>
             </div>
 
             <div class="actions">
-                <div class="ui grey deny inverted button">Нет</div>
-                <div class="ui green approve inverted button">Да</div>
+                <div class="ui grey deny inverted button">No</div>
+                <div class="ui green approve inverted button">Yes</div>
             </div>
         </div>
         <!-- CONFIRMATION MODAL WINDOW -->
@@ -54,9 +54,8 @@
             <div class="column login">
 
                 <h2 class="ui blue image header">
-                    <img src="assets/images/sakhalin.png" class="image">
                     <div class="content">
-                        Войдите в ваш аккаунт
+                        Log into your account
                     </div>
                 </h2>
 
@@ -67,21 +66,21 @@
                         <div class="field">
                             <div class="ui left icon input">
                                 <i class="user icon"></i>
-                                <input type="text" name="email" placeholder="Имя пользователя" ng-model="user.Login" ng-disabled="main.loading">
+                                <input type="text" name="email" placeholder="Username" ng-model="user.Login" ng-disabled="main.loading">
                             </div>
                         </div>
 
                         <div class="field">
                             <div class="ui left icon input">
                                 <i class="lock icon"></i>
-                                <input type="password" name="password" placeholder="Пароль" ng-model="user.PasswordSetter" ng-disabled="main.loading">
+                                <input type="password" name="password" placeholder="Password" ng-model="user.PasswordSetter" ng-disabled="main.loading">
                             </div>
                             <p class="error" ng-show="loginError">
-                                Неправильные имя пользователя и/или пароль.
+                                Incorrect username and/or password
                             </p>
                         </div>
 
-                        <button type="submit" class="ui fluid large blue submit button" ng-disabled="main.loading">Войти</button>
+                        <button type="submit" class="ui fluid large blue submit button" ng-disabled="main.loading">Login</button>
                     </div>
 
                     <div class="ui error message"></div>
@@ -103,7 +102,7 @@
             <div class="content">
                 <h2 class="ui inverted icon header">
                     <i class="checkmark green icon"></i>
-                    Действие выполнено успешно
+                    The action is completed successfully
                 </h2>
             </div>
         </div>

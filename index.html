@@ -12,11 +12,6 @@
         <link rel="stylesheet" type="text/css" href="lib/css/opensans.css">
         <link rel="stylesheet" type="text/css" href="lib/css/semantic.min.css">
         <link rel="stylesheet" type="text/css" href="src/css/custom.css">
-
-        <script language="javascript">
-            // REST web-app name, global variable
-            var RESTWebApp = {appName: '#($GET(^Settings("WF", "WebAppName")))#'};
-        </script>
     </head>
 
     <body ng-app="app" ng-controller="MainCtrl">
@@ -80,7 +75,14 @@
                             </p>
                         </div>
 
-                        <button type="submit" class="ui fluid large blue submit button" ng-disabled="main.loading">Login</button>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="code icon"></i>
+                                <input type="text" name="appName" placeholder="App name" ng-model="appName" ng-disabled="main.loading">
+                            </div>
+                        </div>
+
+                        <button type="submit" onclick="setAppName(appName)" class="ui fluid large blue submit button" ng-disabled="main.loading">Login</button>
                     </div>
 
                     <div class="ui error message"></div>
@@ -107,6 +109,15 @@
             </div>
         </div>
 
+
+        <script language="javascript">
+            // REST web-app name, global variable
+            var RESTWebApp = {appName: ''}
+
+            function setAppName(name) {
+                RESTWebApp = {appName: name.value}
+            }
+        </script>
 
 
         <!-- Hooking scripts -->

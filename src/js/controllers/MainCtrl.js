@@ -74,9 +74,12 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 
     /// Makes user log in
     main.doLogin = function(login, password) {
+
         var authToken = makeBaseAuth(login, password);
         main.loading = true;
         main.loadingClass = 'loading';
+
+        
 
         FormSrvc.getFormsList(authToken)
             .then(function(data) {
@@ -118,7 +121,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
-                alert('An unexpected error occurred, contact your administrator /n' + errorText);
+                alert('An unexpected error occurred, contact your administrator \n' + errorText);
             });
     };
 

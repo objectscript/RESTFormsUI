@@ -7,12 +7,12 @@ var app = angular.module('app', ['ngRoute', 'ngCookies', 'servicesModule', 'cont
 app.config([ '$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/forms');
 
-    $stateProvider.state('forms', { url: '/forms', templateUrl: 'partials/forms.csp', controller: 'FormsListCtrl', cache: false});
-    $stateProvider.state('form', { url: '/form/:form', templateUrl: 'partials/form.csp', controller: 'FormCtrl', cache: false});
+    $stateProvider.state('forms', { url: '/forms', templateUrl: 'partials/forms.html', controller: 'FormsListCtrl', cache: false});
+    $stateProvider.state('form', { url: '/form/:form', templateUrl: 'partials/form.html', controller: 'FormCtrl', cache: false});
     $stateProvider.state('object', { abstract: true, url: '/obj', template: '<ui-view/>' });
-    $stateProvider.state('object.create', { url: '/:form/object', templateUrl: 'partials/object.csp', controller: 'ObjectCtrl', cache: false});
-    $stateProvider.state('object.edit', { url: '/:form/object/:id', templateUrl: 'partials/object.csp', controller: 'ObjectCtrl', cache: false});
-    $stateProvider.state('object.open', { url: '/ro/:form/object/:id', templateUrl: 'partials/object.csp', controller: 'ObjectCtrl', cache: false});
+    $stateProvider.state('object.create', { url: '/:form/object', templateUrl: 'partials/object.html', controller: 'ObjectCtrl', cache: false});
+    $stateProvider.state('object.edit', { url: '/:form/object/:id', templateUrl: 'partials/object.html', controller: 'ObjectCtrl', cache: false});
+    $stateProvider.state('object.open', { url: '/ro/:form/object/:id', templateUrl: 'partials/object.html', controller: 'ObjectCtrl', cache: false});
 }]);
 
 

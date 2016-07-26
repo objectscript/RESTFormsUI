@@ -55,7 +55,7 @@
                 </h2>
 
                 <form class="ui large form" role="form" ng-show="main.loginState != 1" ng-model="user"
-                    ng-submit="main.doLogin(user.Login, user.PasswordSetter); user='';" ng-cloak>
+                    ng-submit="main.doLogin(user.Login, user.PasswordSetter, server, port, webapp); user='';" ng-cloak>
 
                     <div class="ui stacked segment">
                         <div class="field">
@@ -77,12 +77,26 @@
 
                         <div class="field">
                             <div class="ui left icon input">
-                                <i class="code icon"></i>
-                                <input type="text" name="appName" placeholder="App name" ng-model="appName" ng-disabled="main.loading">
+                                <i class="cloud icon"></i>
+                                <input type="text" name="server" placeholder="Server" ng-model="server" ng-disabled="main.loading">
                             </div>
                         </div>
 
-                        <button type="submit" onclick="setAppName(appName)" class="ui fluid large blue submit button" ng-disabled="main.loading">Login</button>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="plug icon"></i>
+                                <input type="text" name="port" placeholder="Port" ng-model="port" ng-disabled="main.loading" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="code icon"></i>
+                                <input type="text" name="webapp" placeholder="Web app" ng-model="webapp" ng-disabled="main.loading">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="ui fluid large blue submit button" ng-disabled="main.loading">Login</button>
                     </div>
 
                     <div class="ui error message"></div>
@@ -108,16 +122,6 @@
                 </h2>
             </div>
         </div>
-
-
-        <script language="javascript">
-            // REST web-app name, global variable
-            var RESTWebApp = {appName: ''}
-
-            function setAppName(name) {
-                RESTWebApp = {appName: name.value}
-            }
-        </script>
 
 
         <!-- Hooking scripts -->

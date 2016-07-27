@@ -17,15 +17,17 @@ function UtilSrvc($cookies, $filter) {
     }
 
     function toJSONLocal(date) {
-        if (!(date instanceof Date)) return; 
+        if (!(date instanceof Date)) return ""; 
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-        date = date.toJSON().slice(0, 10);
-        date = date.split('-');
-        return date[1] + '\/' + date[2] + '\/' + date[0];
+        return new Date(date.toJSON().slice(0, 10));
     }
 
   return {
     // get cookie by name
+    readCookie: 
+      function(name) {
+        return $cookies[name];
+      },   
     // Function to get value of property of the object by name
       // Example: 
       // var obj = {car: {body: {company: {name: 'Mazda'}}}};
@@ -92,7 +94,7 @@ function UtilSrvc($cookies, $filter) {
                         this.convertDateStringsToDates(value);
                     }
                 }
-            },
+            },  
         toJSONLocal: toJSONLocal,
         convertDatestoJSONLocal:
             function (input) {
@@ -105,11 +107,25 @@ function UtilSrvc($cookies, $filter) {
                     // Check for string properties which look like dates.
                     if (value instanceof Date) {
                         input[key] = toJSONLocal(value);
+                    } else if (typeof value == 'undefined') {
+                        input[key] = '';
                     } else if ((typeof value === "object") && !(value instanceof Date)) {
                         // Recurse into object
                         this.convertDatestoJSONLocal(value);
                     }
                 }
+            },
+            getCalendarLocalization:
+            function () {
+                return {
+                          days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                          months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                          monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                          today: 'Today',
+                          now: 'Now',
+                          am: 'AM',
+                          pm: 'PM'
+                        };
             }
   }
 }

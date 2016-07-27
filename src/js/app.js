@@ -91,6 +91,53 @@ app.directive('xref',function($route, $location){
 });
 
 
+app.directive('calendar', function($timeout, UtilSrvc) {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function(scope, element, attrs, ngModelCtrl) {
+            if (scope.calendarConfig) {
+                scope.calendarConfig.onChange = function(date) {
+                    $timeout(function() {
+                        ngModelCtrl.$setViewValue(date);
+                        ngModelCtrl.$render();
+                    });
+                }
+            } else {
+                scope.calendarConfig = {
+                    type: 'date',
+                    firstDayOfWeek: 1,
+                    today: true,
+                    monthFirst: false,
+                    touchReadonly: false,
+                    on: 'click',
+                    text: UtilSrvc.getCalendarLocalization(),
+                    onChange: function(date) {
+                        ngModelCtrl.$setViewValue(date);
+                        ngModelCtrl.$render();
+                    },
+                    formatter: {
+                        date: function (date, settings) {
+                            if (!date) return '';
+                            return date.toLocaleDateString("ru-ru");
+                        }
+                      }
+                }
+            }
+            $(element).calendar(scope.calendarConfig);
+            scope.$watch(function () {
+                return ngModelCtrl.$modelValue;
+            }, function(date, oldDate) {
+                if ((date == oldDate) || (date === '' && typeof oldDate === 'undefined') || (oldDate === '' && typeof date === 'undefined')) {
+                    return
+                }
+                $(element).calendar('set date', date);
+            });
+        }
+    }
+});
+
+
 app.directive('ngCustomField', function ($compile) {
     var getTemplate = function(field, attrs) {
         switch(field.type) {
@@ -130,10 +177,13 @@ app.directive('ngCustomField', function ($compile) {
                 }
             case '%Library.Date':
                 if (!field.readonly) {
-                    return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
+                    return '<div class="ui four wide' + ((field.required) ? ' required' : '') + ' field">' +
                                 '<label>' + field.displayName + '</label>' +
-                                '<div class="ui input" style="vertical-align: top;">' +
-                                    '<input name="' + field.name + '" type="date" placeholder="YYYY-MM-DD" ng-model="obj[\'' + field.name + '\']">' +
+                                '<div calendar ng-model="obj[\'' + field.name + '\']" class="ui calendar"' + 'name="' + field.name + '"' + ((field.required) ? ' required ' : '') + '>' +
+                                    '<div class="ui input left icon">' +
+                                        '<i class="calendar icon"></i>' +
+                                        '<input type="text" placeholder="" >' +
+                                    '</div>' +
                                 '</div>' +
                            '</div>';
                 } else {

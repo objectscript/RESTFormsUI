@@ -15,7 +15,6 @@ app.config([ '$stateProvider', '$urlRouterProvider', function($stateProvider, $u
     $stateProvider.state('object.open', { url: '/ro/:form/object/:id', templateUrl: 'partials/object.html', controller: 'ObjectCtrl', cache: false});
 }]);
 
-
 app.directive('fileUpload', function () {
     return {
         scope: true,
@@ -37,7 +36,7 @@ app.directive('ngMultiselect', function ($timeout) {
         restrict: 'E',
         scope: false,
         template: function (element, attrs) {
-            return '<select class="ui ng-multiselect dropdown ' + attrs.class + ((attrs.disabled) ? ' disabled"' : '"') + 'name="' + attrs.name + 
+            return '<select class="ui ng-multiselect dropdown ' + attrs.class + ((attrs.disabled) ? ' disabled"' : '"') + 'name="' + attrs.name +
                 '" ng-model="' + attrs.model + '" ng-options="' + attrs.options + '"' + 'placeholder="' + attrs.placeholder + '" ng-disabled="' + attrs.ngDisabled + '"'
                 + ((attrs.id) ? 'id="' + attrs.id + '"' : '') + ((attrs.required) ? ' required' : '') + '></select>';
         },
@@ -200,10 +199,10 @@ app.directive('ngCustomField', function ($compile) {
                         return '<div class="ui eight wide' + ((field.required) ? ' required' : '') + ' field">' +
                                     '<label>' + field.displayName + '</label>' +
                                     '<select name="' + field.name + '" class="ui dropdown" ng-model="obj[\'' + field.name + '\']"' +
-                                            ((field.disabled) ? ' disabled' : '') + ((field.required) ? ' required' : '') + ((field.readonly) ? ' disabled' : '') +
-                                            ' ng-options="val as val.displayName for val in catalogs[\'' + field.type + '\'] track by val._id">' +
-                                        '<option value="" disabled selected hidden>Choose a value</option>' +
-                                    '</select>' +
+                                              ((field.disabled) ? ' disabled' : '') + ((field.required) ? ' required' : '') + ((field.readonly) ? ' disabled' : '') +
+                                              ' ng-options="val as val.displayName for val in catalogs[\'' + field.type + '\'] track by val._id*1">' +
+                                          '<option value="" disabled selected hidden>Choose a value</option>' +
+                                      '</select>' +
                                '</div>';
                     } else {
                         return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +

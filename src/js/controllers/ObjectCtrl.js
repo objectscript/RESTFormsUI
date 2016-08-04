@@ -1,9 +1,11 @@
 function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
-    'use strict'; 
+    'use strict';
 
 /*===============================================================
                        VARIABLES INITIALIZATION
 ===============================================================*/
+
+  window.s = $s;
 
     // initialization block
     $s.ctrl = {};
@@ -278,4 +280,3 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
 // resolving minification problems
 ObjectCtrl.$inject = ['$scope', '$q', '$stateParams', 'FormSrvc', '$state', '$timeout', 'UtilSrvc'];
 controllersModule.controller('ObjectCtrl', ObjectCtrl);
-

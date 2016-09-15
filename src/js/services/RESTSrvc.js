@@ -17,8 +17,7 @@ function RESTSrvc($http, $q) {
             return deferred.promise;
         }
     }
-};
-
+}
 // resolving minification problems
 RESTSrvc.$inject = ['$http', '$q'];
 servicesModule.factory('RESTSrvc', RESTSrvc);

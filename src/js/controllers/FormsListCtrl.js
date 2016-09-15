@@ -15,7 +15,7 @@ function FormsListCtrl($s, $state, $cookies, FormSrvc, $filter) {
     ctrl.forms = [];
 
     ctrl.grid = {
-        caption: 'Список задач',
+        caption: 'The list of tasks',
         itemsByPage: 25
     };
 
@@ -46,8 +46,9 @@ function FormsListCtrl($s, $state, $cookies, FormSrvc, $filter) {
 
     ctrl.init = function() {
 
-        if (!main.loginState) { return };
-
+        if (!main.loginState) {
+            return
+        }
         main.showBusyDimmer();
 
         FormSrvc.getFormsList(main.authToken)

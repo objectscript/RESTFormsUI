@@ -1,11 +1,15 @@
 /// Main controller
 /// Controls the authentication. Loads all the worklists for user.
-function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeout) {
+function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeout, $root) {
     'use strict';
 
 /*===============================================================
                        VARIABLES INITIALIZATION
 ===============================================================*/
+
+    $root.server = "localhost";
+    $root.port = "57772";
+    $root.webapp = "forms";
 
     $s.main = {};
     $s.utils = UtilSrvc;
@@ -57,7 +61,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 
     $s.closeObject = function() {
         $s.$broadcast('closeObject');
-    }
+    };
 
     /// Goes to specified state
     main.goState = function(state) {
@@ -73,10 +77,16 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
     main.getLocalDate = UtilSrvc.toJSONLocal;
 
     /// Makes user log in
-    main.doLogin = function(login, password) {
+    main.doLogin = function(login, password, server, port, webapp) {
+
+        $root.server = server;
+        $root.port = port;
+        $root.webapp = webapp;
+
         var authToken = makeBaseAuth(login, password);
         main.loading = true;
         main.loadingClass = 'loading';
+        
 
         FormSrvc.getFormsList(authToken)
             .then(function(data) {
@@ -90,12 +100,6 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 
                 $s.$broadcast('login', data);
                 $state.go('forms', {}, { reload: true, inherit: false, notify: true });
-                return SessionSrvc.getUser(main.authToken)
-            })
-            .then(function(data) {
-                if (data && data.User) {
-                    main.user = data.User;
-                }
             })
             .catch(function(err) {
                 $s.loginError = true;
@@ -119,22 +123,22 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
                 delete $cookies['User'];
                 delete $cookies['Token'];
                 document.cookie = "CacheBrowserId" + "=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-                document.cookie = "CSPSESSIONID" + "=; Path=" + RESTWebApp.appName + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-                document.cookie = "CSPWSERVERID" + "=; Path=" + RESTWebApp.appName + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                document.cookie = "CSPSESSIONID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                document.cookie = "CSPWSERVERID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
-                alert('Непредвиденная ошибка, обратитесь к администратору /n' + errorText);
+                alert('An unexpected error occurred, contact your administrator \n' + errorText);
             });
-    }
+    };
 
     main.logout = function() {
         $s.$broadcast('logout');
-    }
+    };
 
     main.goMain = function() {
         $s.$broadcast('goMain');
-    }
+    };
 
     main.dataInit = function() {
         $s.$broadcast('refresh');
@@ -145,19 +149,14 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 ===============================================================*/
 
     $s.init = function() {
-        if (!main.loginState) { return };
-
-        SessionSrvc.getUser(main.authToken)
-            .then(function(data) {
-                if (data && data.User) {
-                    main.user = data.User;
-                }
-            });
+        if (!main.loginState) {
+            return
+        }
     };
 
     $s.init();
 }
 
 // resolving minification problems
-MainCtrl.$inject = ['$scope', '$state', '$cookies', 'FormSrvc', 'SessionSrvc', 'UtilSrvc', '$timeout'];
+MainCtrl.$inject = ['$scope', '$state', '$cookies', 'FormSrvc', 'SessionSrvc', 'UtilSrvc', '$timeout', '$rootScope'];
 controllersModule.controller('MainCtrl', MainCtrl);

@@ -1,4 +1,4 @@
-function FormCtrl($s, $params, $state, FormSrvc, $filter) {
+function FormCtrl($s, $params, $state, FormSrvc) {
     'use strict';
 
 /*===============================================================
@@ -16,7 +16,7 @@ function FormCtrl($s, $params, $state, FormSrvc, $filter) {
     ctrl.form = {};
 
     ctrl.grid = {
-        caption: 'Список задач',
+        caption: 'The list of tasks',
         itemsByPage: 25
     };
 
@@ -42,14 +42,14 @@ function FormCtrl($s, $params, $state, FormSrvc, $filter) {
         ctrl.forms = data;
     });
 
-    $s.$on('logout', function (event, data) {
+    $s.$on('logout', function (data) {
         main.doExit()
             .then(function() {
                 ctrl.forms = [];
             });
     });
 
-    $s.$on('goMain', function (event, data) {
+    $s.$on('goMain', function (data) {
         $state.go('forms', { reload: true, inherit: false, notify: true });
     });
 
@@ -95,7 +95,7 @@ function FormCtrl($s, $params, $state, FormSrvc, $filter) {
     };
 
     ctrl.deleteObject = function(obj) {
-        main.confirmationText = 'Вы действительно хотите удалить объект?';
+        main.confirmationText = 'Are you sure you want to delete the object?';
 
         $('#confirmation')
             .modal({
@@ -119,8 +119,9 @@ function FormCtrl($s, $params, $state, FormSrvc, $filter) {
 
     ctrl.init = function() {
 
-        if (!main.loginState) { return };
-
+        if (!main.loginState) {
+            return
+        }
         if (!$params.form) {
             $state.go('forms', {}, { reload: true, inherit: false, notify: true });
         }
@@ -142,8 +143,8 @@ function FormCtrl($s, $params, $state, FormSrvc, $filter) {
             })
             .catch(function(err) {
                 var errorText =  $s.getErrorText(err);
-                alert('Непредвиденная ошибка, обратитесь к администратору \n' + errorText);
-             });;
+                alert('An unexpected error occurred, contact your administrator \n' + errorText);
+            });
     };
 
     ctrl.init();

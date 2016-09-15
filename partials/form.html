@@ -15,22 +15,22 @@
                                 <span ng-bind="row.displayName"></span>
                             </td>
                             <td style="width: 130px; border-left:none;" class="text-right">
-                                <div class="ui blue tiny icon button" ng-click="ctrl.editObject(row._id)" title="Редактировать" ng-if="ctrl.isUpdate()"><i class="icon edit"></i></div>
-                                <div class="ui teal tiny icon button" ng-click="ctrl.openObject(row._id)" title="Просмотреть" ng-if="ctrl.isRead() && !ctrl.isUpdate()"><i class="icon zoom"></i></div>
-                                <div class="ui red tiny icon button" ng-click="ctrl.deleteObject(row)" title="Удалить" ng-if="ctrl.isDelete()"><i class="icon remove"></i></div>
+                                <div class="ui blue tiny icon button" ng-click="ctrl.editObject(row._id)" title="Edit" ng-if="ctrl.isUpdate()"><i class="icon edit"></i></div>
+                                <div class="ui teal tiny icon button" ng-click="ctrl.openObject(row._id)" title="View" ng-if="ctrl.isRead() && !ctrl.isUpdate()"><i class="icon zoom"></i></div>
+                                <div class="ui red tiny icon button" ng-click="ctrl.deleteObject(row)" title="Delete" ng-if="ctrl.isDelete()"><i class="icon remove"></i></div>
                             </td>
                         </tr>
 
                         <tr ng-if="!objectsDisplayed.length">
                             <td>
-                                <span>Нет элементов</span>
+                                <span>No elements</span>
                             </td>
                         </tr>
                     </tbody>
                     <tbody ng-if="!ctrl.isRead()">
                         <tr>
                             <td>
-                                <span>Извините, у вас нет прав на чтение</span>
+                                <span>Unfortunately, you don't have the rights to read</span>
                             </td>
                         </tr>
                     </tbody>

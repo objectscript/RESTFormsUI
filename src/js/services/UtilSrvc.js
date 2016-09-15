@@ -17,11 +17,9 @@ function UtilSrvc($cookies, $filter) {
     }
 
     function toJSONLocal(date) {
-        if (!(date instanceof Date)) return; 
+        if (!(date instanceof Date)) return ""; 
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-        date = date.toJSON().slice(0, 10);
-        date = date.split('-');
-        return date[1] + '\/' + date[2] + '\/' + date[0];
+        return new Date(date.toJSON().slice(0, 10));
     }
 
   return {
@@ -30,8 +28,7 @@ function UtilSrvc($cookies, $filter) {
       function(name) {
         return $cookies[name];
       },   
-  
-      // Function to get value of property of the object by name
+    // Function to get value of property of the object by name
       // Example: 
       // var obj = {car: {body: {company: {name: 'Mazda'}}}};
       // getPropertyValue(obj, 'car.body.company.name') 
@@ -50,7 +47,7 @@ function UtilSrvc($cookies, $filter) {
             }
           }
           catch(ex) {
-            console.log('Произошла непредвиденная ошибка.');
+            console.log('An unexpected error happened.');
           }
           
           switch (propertyType) {
@@ -86,7 +83,7 @@ function UtilSrvc($cookies, $filter) {
                     var match;
                     // Check for string properties which look like dates.
                     if (typeof value === "string" && (match = value.match(regexIso8601))) {
-                        var milliseconds = Date.parse(match[0])
+                        var milliseconds = Date.parse(match[0]);
                         if (!isNaN(milliseconds)) {
                             input[key] = new Date(milliseconds);
                         }
@@ -97,7 +94,7 @@ function UtilSrvc($cookies, $filter) {
                         this.convertDateStringsToDates(value);
                     }
                 }
-            },
+            },  
         toJSONLocal: toJSONLocal,
         convertDatestoJSONLocal:
             function (input) {
@@ -110,15 +107,28 @@ function UtilSrvc($cookies, $filter) {
                     // Check for string properties which look like dates.
                     if (value instanceof Date) {
                         input[key] = toJSONLocal(value);
+                    } else if (typeof value == 'undefined') {
+                        input[key] = '';
                     } else if ((typeof value === "object") && !(value instanceof Date)) {
                         // Recurse into object
                         this.convertDatestoJSONLocal(value);
                     }
                 }
+            },
+            getCalendarLocalization:
+            function () {
+                return {
+                          days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                          months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                          monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                          today: 'Today',
+                          now: 'Now',
+                          am: 'AM',
+                          pm: 'PM'
+                        };
             }
   }
-};
-
+}
 // resolving minification problems
 UtilSrvc.$inject = ['$cookies', '$filter'];
 servicesModule.factory('UtilSrvc', UtilSrvc);

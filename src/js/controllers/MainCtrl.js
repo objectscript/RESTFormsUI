@@ -7,8 +7,8 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
                        VARIABLES INITIALIZATION
 ===============================================================*/
 
-    $root.server = "localhost";
-    $root.port = "57772";
+    $root.server = location.hostname //"localhost";
+    $root.port = location.port //"57772";
     $root.webapp = "forms";
 
     $s.main = {};

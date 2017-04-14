@@ -22,6 +22,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
     main.loadingClass = '';
     main.loginState = $cookies['Token'] ? 1 : 0;
     main.authToken = $cookies['Token'];
+    main.language = angular.fromJson(localStorage.rflanguage) || 'en-US';
 
     main.showBusyDimmer = function() { main.busy = true };
     main.hideBusyDimmer = function() { main.busy = false };
@@ -50,6 +51,14 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         var hash = Base64.encode(token);
         return 'Basic ' + hash;
     }
+
+    $s.$watch('main.language', function(oldVal, newVal) {
+        localStorage.rflanguage = angular.toJson(main.language);
+
+        if (oldVal != newVal) {
+            $state.go($state.current, {}, {reload: true});
+        }
+    });
 
 /*===============================================================
                         EXPORTED FUNCTIONS
@@ -86,7 +95,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         var authToken = makeBaseAuth(login, password);
         main.loading = true;
         main.loadingClass = 'loading';
-        
+
 
         FormSrvc.getFormsList(authToken)
             .then(function(data) {

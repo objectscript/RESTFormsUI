@@ -6,6 +6,8 @@ function RESTSrvc($http, $q) {
             function(config) {
                 var deferred = $q.defer();
 
+                config.headers['Accept-Language'] = angular.fromJson(localStorage.rflanguage) || 'en-US';
+
                 $http(config)
                     .success(function(data, status, headers, config) {
                         deferred.resolve(data);

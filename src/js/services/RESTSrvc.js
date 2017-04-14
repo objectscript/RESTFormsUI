@@ -6,7 +6,15 @@ function RESTSrvc($http, $q) {
             function(config) {
                 var deferred = $q.defer();
 
-                config.headers['Accept-Language'] = angular.fromJson(localStorage.rflanguage) || 'en-US';
+                var langSetting = angular.fromJson(localStorage.rflanguage);
+                var language = 'en-US';
+
+                if (!angular.isUndefinedOrNullOrEmpty(langSetting)
+                 && !angular.isUndefinedOrNullOrEmpty(langSetting.domain)) {
+                     language = langSetting.domain;
+                }
+
+                config.headers['Accept-Language'] = language;
 
                 $http(config)
                     .success(function(data, status, headers, config) {

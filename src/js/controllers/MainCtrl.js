@@ -22,11 +22,12 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
     main.loadingClass = '';
     main.loginState = $cookies['Token'] ? 1 : 0;
     main.authToken = $cookies['Token'];
-    main.language = angular.fromJson(localStorage.rflanguage) || 'en-US';
 
     main.showBusyDimmer = function() { main.busy = true };
     main.hideBusyDimmer = function() { main.busy = false };
     main.isLoggedIn = function() { return !!main.loginState };
+
+    window.s = main;
 
     $s.extensionsCSS = {
         'pdf'  : 'pdf',
@@ -72,9 +73,31 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         return 'Basic ' + hash;
     }
 
-    $s.$watch('main.language', function(oldVal, newVal) {
-        localStorage.rflanguage = angular.toJson(main.language);
+    function getLanguageList() {
+        return SessionSrvc.getLanguageList(main.authToken)
+            .then(function(data) {
+                var languages = data.languages || [];
+                languages = languages.map(function(lang) {
+                    var domains = lang.split('-');
+                    return {
+                        name: UtilSrvc.getLanguageName(domains[1]),
+                        lang: domains[0] + '-' + domains[1].toUpperCase()
+                    }
+                });
 
+                main.languageList = languages;
+            })
+            .finally(function() {
+                main.language = angular.fromJson(localStorage.rflanguage) || { lang: 'en-US', name: 'English (US)' };
+            });
+    }
+
+    $s.$watch('main.language', function(oldVal, newVal) {
+        if (angular.isUndefinedOrNull(newVal)) {
+            return;
+        }
+
+        localStorage.rflanguage = angular.toJson(main.language);
         if (oldVal != newVal) {
             $state.go($state.current, {}, {reload: true});
         }
@@ -116,8 +139,10 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         main.loading = true;
         main.loadingClass = 'loading';
 
-
-        FormSrvc.getFormsList(authToken)
+        getLanguageList()
+            .then(function() {
+                return FormSrvc.getFormsList(authToken);
+            })
             .then(function(data) {
                 main.loginState = 1;
                 $s.loginError = false;
@@ -181,6 +206,8 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         if (!main.loginState) {
             return
         }
+
+        getLanguageList();
     };
 
     $s.init();

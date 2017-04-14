@@ -1,6 +1,6 @@
-'use strict'; 
+'use strict';
 
-function FormSrvc(RESTSrvc, $rootScope) {    
+function FormSrvc(RESTSrvc, $rootScope) {
   return {
     getFormsList:
       function(baseAuthToken) {
@@ -9,11 +9,11 @@ function FormSrvc(RESTSrvc, $rootScope) {
     // create new form object
     newForm:
       function(form, formType, baseAuthToken) {
-        return RESTSrvc.getPromise( {method: 'POST', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/object/' + formType, data: form, 
+        return RESTSrvc.getPromise( {method: 'POST', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/object/' + formType, data: form,
                                      headers: {'Authorization' : baseAuthToken} });
       },
     // update form object
-    updateForm: 
+    updateForm:
       function(id, form, formType, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'PUT', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/object/' + formType + '/' + id, data: form, headers: {'Authorization' : baseAuthToken} });
       },
@@ -22,19 +22,19 @@ function FormSrvc(RESTSrvc, $rootScope) {
       function(formType, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'GET', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/info/' + formType, headers: {'Authorization' : baseAuthToken} });
       },
-    getCatalog: 
+    getCatalog:
       function(catalog, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'GET', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/objects/' + catalog + '/infoclass?size=500', headers: {'Authorization' : baseAuthToken} });
       },
-    getCatalogMeta: 
+    getCatalogMeta:
       function(catalog, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'GET', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/info/' + catalog, headers: {'Authorization' : baseAuthToken} });
       },
-    getFormObjectsInfo: 
+    getFormObjectsInfo:
       function(formType, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'GET', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/objects/' + formType + '/info?size=500&orderby=2', headers: {'Authorization' : baseAuthToken} });
       },
-    getFormObject: 
+    getFormObject:
       function(formType, objectId, baseAuthToken) {
         return RESTSrvc.getPromise( {method: 'GET', url: "http://" + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/form/object/' + formType + '/' + objectId, headers: {'Authorization' : baseAuthToken} });
       },

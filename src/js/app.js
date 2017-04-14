@@ -194,10 +194,14 @@ app.directive('ngCustomField', function ($compile) {
                            '</div>';
                 }
             case '%Library.Boolean':
+                var click = null;
+                if (!field.readonly) {
+                    click = 'obj[\'' + field.name + '\'] = !obj[\'' + field.name + '\']';
+                }
                 return  ['<div class="field" style="padding: 0 0.5em;">',
                             '<div class="ui checkbox no-after"',
                                 'style="margin-top: 10px;"',
-                                'ng-click="obj[\'' + field.name + '\'] = !obj[\'' + field.name + '\']">',
+                                'ng-click="' + click + '">',
                                     '<input type="checkbox"',
                                         'tabindex="0"',
                                         'class="hidden"',

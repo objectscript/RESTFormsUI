@@ -1,6 +1,6 @@
 /// Main controller
 /// Controls the authentication. Loads all the worklists for user.
-function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeout, $root) {
+function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeout, $root, $filter) {
     'use strict';
 
 /*===============================================================
@@ -39,6 +39,26 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         'jpg'  : 'image',
         'xls'  : 'excel',
         'xlsx' : 'excel'
+    };
+
+    $root.timestampConfig = {
+        type: 'datetime',
+        firstDayOfWeek: 1,
+        today: true,
+        monthFirst: false,
+        touchReadonly: false,
+        on: 'click',
+        text: UtilSrvc.getCalendarLocalization(),
+        onChange: function(date) {
+            ngModelCtrl.$setViewValue(date);
+            ngModelCtrl.$render();
+        },
+        formatter: {
+            datetime: function (date, settings) {
+                if (!date) return '';
+                return $filter('date')(date, 'yyyy-MM-dd HH:mm:ss');
+            }
+        }
     };
 
 /*===============================================================
@@ -167,5 +187,5 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 }
 
 // resolving minification problems
-MainCtrl.$inject = ['$scope', '$state', '$cookies', 'FormSrvc', 'SessionSrvc', 'UtilSrvc', '$timeout', '$rootScope'];
+MainCtrl.$inject = ['$scope', '$state', '$cookies', 'FormSrvc', 'SessionSrvc', 'UtilSrvc', '$timeout', '$rootScope', '$filter'];
 controllersModule.controller('MainCtrl', MainCtrl);

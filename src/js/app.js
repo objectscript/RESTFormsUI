@@ -1,5 +1,13 @@
 'use strict';
 
+angular.isUndefinedOrNull = function(val) {
+    return angular.isUndefined(val) || val === null;
+}
+
+angular.isUndefinedOrNullOrEmpty = function(val) {
+    return angular.isUndefined(val) || val === null || val === '';
+}
+
 var servicesModule    = angular.module('servicesModule',[]);
 var controllersModule = angular.module('controllersModule', []);
 var app = angular.module('app', ['ngRoute', 'ngCookies', 'servicesModule', 'controllersModule', 'ui.router', 'smart-table']);
@@ -94,10 +102,25 @@ app.directive('calendar', function($timeout, UtilSrvc) {
     return {
         require: 'ngModel',
         restrict: 'A',
+        scope: {
+            calendarConfig: '=?bind'
+        },
         link: function(scope, element, attrs, ngModelCtrl) {
+
+            if (angular.isUndefinedOrNull(ngModelCtrl.$options)) {
+                ngModelCtrl.$options = {
+                    updateOnDefault: true,
+                    updateOn: 'blur $destroy',
+                    debounce: {
+                        'default': 0,
+                        'blur': 10
+                    }
+                };
+            }
+
             if (scope.calendarConfig) {
                 scope.calendarConfig.onChange = function(date) {
-                    $timeout(function() {
+                    scope.$applyAsync(function() {
                         ngModelCtrl.$setViewValue(date);
                         ngModelCtrl.$render();
                     });
@@ -112,32 +135,75 @@ app.directive('calendar', function($timeout, UtilSrvc) {
                     on: 'click',
                     text: UtilSrvc.getCalendarLocalization(),
                     onChange: function(date) {
-                        ngModelCtrl.$setViewValue(date);
-                        ngModelCtrl.$render();
+                        scope.$applyAsync(function() {
+                            ngModelCtrl.$setViewValue(date);
+                            ngModelCtrl.$render();
+                        });
                     },
                     formatter: {
                         date: function (date, settings) {
                             if (!date) return '';
-                            return date.toLocaleDateString("ru-ru");
+                            return date.toString('dd.MM.yyyy');
                         }
                       }
                 }
             }
+
             $(element).calendar(scope.calendarConfig);
-            scope.$watch(function () {
-                return ngModelCtrl.$modelValue;
-            }, function(date, oldDate) {
-                if ((date == oldDate) || (date === '' && typeof oldDate === 'undefined') || (oldDate === '' && typeof date === 'undefined')) {
-                    return
+
+            var input = $(element[0].querySelector('input'));
+            var input_onblur = function() {
+                element.triggerHandler('blur');
+            };
+
+            input.on('blur', input_onblur);
+
+
+            var ngModelUnwatch = scope.$watch(
+                function () {
+                    return ngModelCtrl.$modelValue;
+                },
+
+                function(date, oldDate) {
+                    if (
+                        (date === '' && angular.isUndefined(oldDate))
+                        || (oldDate === '' && angular.isUndefined(date))
+                        || (date === '' && oldDate === '')
+                    ) {
+                        return;
+                    } else if (date === '' || angular.isUndefined(date)) {
+                        $(element).calendar('set date', date);
+                        return;
+                    }
+
+
+                    if (!angular.isDate(date)) {
+                        date = new Date(date);
+                    }
+
+                    if (angular.isDate(date)) {
+                        $(element).calendar('set date', date);
+                    }
                 }
-                $(element).calendar('set date', date);
+            );
+
+// Destroying part
+
+            // Clean up things on destroy
+            element.on('$destroy', function () {
+                scope.$destroy();
+            });
+
+            scope.$on('$destroy', function () {
+                ngModelUnwatch();
+                input.off('blur', input_onblur);
             });
         }
     }
 });
 
 
-app.directive('ngCustomField', function ($compile) {
+app.directive('ngCustomField', function ($compile, $rootScope) {
     var getTemplate = function(field, attrs) {
         switch(field.type) {
             case '%Library.Integer':
@@ -190,6 +256,25 @@ app.directive('ngCustomField', function ($compile) {
                                 '<label>' + field.displayName + '</label>' +
                                 '<div class="ui input" style="vertical-align: top;">' +
                                     '<input name="' + field.name + '" type="text" ng-value="obj[\'' + field.name + '\'] | date:\'dd.MM.yyyy\'">' +
+                                '</div>' +
+                           '</div>';
+                }
+            case '%Library.TimeStamp':
+                if (!field.readonly) {
+                    return '<div class="ui four wide' + ((field.required) ? ' required' : '') + ' field">' +
+                                '<label>' + field.displayName + '</label>' +
+                                '<div calendar bind="timestampConfig" ng-model="obj[\'' + field.name + '\']" class="ui calendar"' + 'name="' + field.name + '"' + ((field.required) ? ' required ' : '') + '>' +
+                                    '<div class="ui input left icon">' +
+                                        '<i class="calendar icon"></i>' +
+                                        '<input type="text" placeholder="" >' +
+                                    '</div>' +
+                                '</div>' +
+                           '</div>';
+                } else {
+                    return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
+                                '<label>' + field.displayName + '</label>' +
+                                '<div class="ui input" style="vertical-align: top;">' +
+                                    '<input name="' + field.name + '" type="text" ng-value="obj[\'' + field.name + '\'] | date:\'dd.MM.yyyy HH:mm:ss\'">' +
                                 '</div>' +
                            '</div>';
                 }

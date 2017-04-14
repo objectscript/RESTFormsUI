@@ -155,7 +155,6 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
         if (action == 'save') {
             if (!$s.obj._id) {
                 main.showBusyDimmer();
-                UtilSrvc.convertDatestoJSONLocal($s.obj);
                 return FormSrvc.newForm($s.obj, $params.form, main.authToken)
                     .then(function(data) {
 
@@ -180,7 +179,6 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
                     });
             } else {
                 main.showBusyDimmer();
-                UtilSrvc.convertDatestoJSONLocal($s.obj);
                 return FormSrvc.updateForm($s.obj._id, $s.obj, $params.form, main.authToken)
                     .then(function() {
                         $('#success-dimmer').dimmer('show');

@@ -193,6 +193,20 @@ app.directive('ngCustomField', function ($compile) {
                                 '</div>' +
                            '</div>';
                 }
+            case '%Library.Boolean':
+                return  ['<div class="field" style="padding: 0 0.5em;">',
+                            '<div class="ui checkbox no-after"',
+                                'style="margin-top: 10px;"',
+                                'ng-click="obj[\'' + field.name + '\'] = !obj[\'' + field.name + '\']">',
+                                    '<input type="checkbox"',
+                                        'tabindex="0"',
+                                        'class="hidden"',
+                                        'name="' + field.name + '"',
+                                        'ng-model="obj[\'' + field.name + '\']">',
+                                    '<label>' + field.displayName + '</label>',
+                            '</div>',
+                         '</div>'
+                        ].join('\n');
             default:
                 if (field.category == 'form') {
                     if (!field.readonly) {

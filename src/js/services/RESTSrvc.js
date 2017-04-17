@@ -8,10 +8,11 @@ function RESTSrvc($http, $q) {
 
                 var langSetting = angular.fromJson(localStorage.rflanguage);
                 var language = 'en';
+                console.log(localStorage.rflanguage)
 
                 if (!angular.isUndefinedOrNullOrEmpty(langSetting)
-                 && !angular.isUndefinedOrNullOrEmpty(langSetting.domain)) {
-                     language = langSetting.domain;
+                 && !angular.isUndefinedOrNullOrEmpty(langSetting.lang)) {
+                     language = langSetting.lang;
                 }
 
                 config.headers['Accept-Language'] = language;

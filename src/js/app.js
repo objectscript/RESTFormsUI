@@ -98,7 +98,7 @@ app.directive('xref',function($route, $location){
 });
 
 
-app.directive('calendar', function($timeout, UtilSrvc) {
+app.directive('calendar', function($timeout, UtilSrvc, $filter) {
     return {
         require: 'ngModel',
         restrict: 'A',
@@ -130,7 +130,7 @@ app.directive('calendar', function($timeout, UtilSrvc) {
                     type: 'date',
                     firstDayOfWeek: 1,
                     today: true,
-                    monthFirst: false,
+                    monthFirst: true,
                     touchReadonly: false,
                     on: 'click',
                     text: UtilSrvc.getCalendarLocalization(),
@@ -143,7 +143,7 @@ app.directive('calendar', function($timeout, UtilSrvc) {
                     formatter: {
                         date: function (date, settings) {
                             if (!date) return '';
-                            return date.toString('dd.MM.yyyy');
+                            return $filter('date')(date, 'yyyy-MM-dd');
                         }
                       }
                 }

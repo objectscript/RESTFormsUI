@@ -145,7 +145,7 @@ function UtilSrvc($cookies, $filter) {
                 zh: "Chinese",
                 da: "Danish",
                 nl: "Dutch",
-                en: "English (UK)",
+                en: "English",
                 et: "Estonian",
                 eo: "Esperanto",
                 fi: "Finnish",
@@ -180,7 +180,6 @@ function UtilSrvc($cookies, $filter) {
                 th: "Thai",
                 tr: "Turkish",
                 uk: "Ukrainian",
-                us: "English (US)",
                 vi: "Vietnamese"
             }
 

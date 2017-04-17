@@ -5,8 +5,6 @@ function ObjectCtrl($s, $q, $params, FormSrvc, $state, $timeout, UtilSrvc) {
                        VARIABLES INITIALIZATION
 ===============================================================*/
 
-  window.s = $s;
-
     // initialization block
     $s.ctrl = {};
 

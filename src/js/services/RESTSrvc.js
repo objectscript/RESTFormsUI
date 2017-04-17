@@ -7,7 +7,7 @@ function RESTSrvc($http, $q) {
                 var deferred = $q.defer();
 
                 var langSetting = angular.fromJson(localStorage.rflanguage);
-                var language = 'en-US';
+                var language = 'en';
 
                 if (!angular.isUndefinedOrNullOrEmpty(langSetting)
                  && !angular.isUndefinedOrNullOrEmpty(langSetting.domain)) {

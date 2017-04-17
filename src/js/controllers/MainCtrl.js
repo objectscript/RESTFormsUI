@@ -27,8 +27,6 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
     main.hideBusyDimmer = function() { main.busy = false };
     main.isLoggedIn = function() { return !!main.loginState };
 
-    window.s = main;
-
     $s.extensionsCSS = {
         'pdf'  : 'pdf',
         'txt'  : 'text',
@@ -76,19 +74,19 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
     function getLanguageList() {
         return SessionSrvc.getLanguageList(main.authToken)
             .then(function(data) {
-                var languages = data.languages || [];
+                var languages = data.languages || ['en'];
+
                 languages = languages.map(function(lang) {
-                    var domains = lang.split('-');
+                    var domain = lang.split('-')[0];
                     return {
-                        name: UtilSrvc.getLanguageName(domains[1]),
-                        lang: domains[0] + '-' + domains[1].toUpperCase()
+                        name: UtilSrvc.getLanguageName(domain),
+                        lang: domain
                     }
                 });
 
                 main.languageList = languages;
-            })
-            .finally(function() {
-                main.language = angular.fromJson(localStorage.rflanguage) || { lang: 'en-US', name: 'English (US)' };
+                main.language = angular.fromJson(localStorage.rflanguage) || { lang: 'en', name: 'English' };
+                localStorage.rflanguage = angular.toJson(main.language);
             });
     }
 

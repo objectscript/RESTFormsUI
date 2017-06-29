@@ -1,15 +1,29 @@
 /// Main controller
 /// Controls the authentication. Loads all the worklists for user.
-function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeout, $root, $filter) {
+function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeout, $root, $filter, $window) {
     'use strict';
+
+    function clearCookies() {
+        delete $cookies['User'];
+        delete $cookies['Token'];
+        document.cookie = "CacheBrowserId" + "=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.cookie = "CSPSESSIONID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.cookie = "CSPWSERVERID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    }
 
 /*===============================================================
                        VARIABLES INITIALIZATION
 ===============================================================*/
+    $root.protocol = (location.protocol === 'https:') ? 'https://' : 'http://';
 
-    $root.server = location.hostname //"localhost";
-    $root.port = location.port //"57772";
-    $root.webapp = "forms";
+    var config = JSON.parse($window.localStorage.getItem("RESTFormsUIServerConfig")) || {};
+    $root.server = config.server || location.hostname;
+    $root.port = config.port || location.port;
+    $root.webapp = config.webapp || "forms";
+
+    if (!config.server || !config.port || !config.webapp) {
+        clearCookies();
+    }
 
     $s.main = {};
     $s.utils = UtilSrvc;
@@ -133,14 +147,23 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         $root.port = port;
         $root.webapp = webapp;
 
+        var config = {
+            server: server,
+            port: port,
+            webapp: webapp
+        };
+
+
         var authToken = makeBaseAuth(login, password);
         main.loading = true;
         main.loadingClass = 'loading';
 
         getLanguageList()
             .then(function() {
+                $window.localStorage.setItem("RESTFormsUIServerConfig", JSON.stringify(config));
                 return FormSrvc.getFormsList(authToken);
             })
+
             .then(function(data) {
                 main.loginState = 1;
                 $s.loginError = false;
@@ -162,6 +185,14 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
             });
     };
 
+    main.clearCookies = function() {
+        delete $cookies['User'];
+        delete $cookies['Token'];
+        document.cookie = "CacheBrowserId" + "=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.cookie = "CSPSESSIONID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        document.cookie = "CSPWSERVERID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    }
+
     /// Makes user log out
     main.doExit = function () {
         return SessionSrvc.logout(main.authToken)
@@ -171,12 +202,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
                 main.loading = false;
                 main.loadingClass = '';
 
-                // clear cookies
-                delete $cookies['User'];
-                delete $cookies['Token'];
-                document.cookie = "CacheBrowserId" + "=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-                document.cookie = "CSPSESSIONID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-                document.cookie = "CSPWSERVERID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                clearCookies();
             })
             .catch(function(err) {
                 var errorText = $s.getErrorText(err);
@@ -212,5 +238,5 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
 }
 
 // resolving minification problems
-MainCtrl.$inject = ['$scope', '$state', '$cookies', 'FormSrvc', 'SessionSrvc', 'UtilSrvc', '$timeout', '$rootScope', '$filter'];
+MainCtrl.$inject = ['$scope', '$state', '$cookies', 'FormSrvc', 'SessionSrvc', 'UtilSrvc', '$timeout', '$rootScope', '$filter', '$window'];
 controllersModule.controller('MainCtrl', MainCtrl);

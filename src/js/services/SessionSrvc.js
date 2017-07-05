@@ -5,12 +5,12 @@ function SessionSrvc(RESTSrvc, $rootScope) {
   return {
     logout:
       function(baseAuthToken) {
-        return RESTSrvc.getPromise( {method: 'GET', url: $rootScope.protocol + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/logout', headers: {'Authorization' : baseAuthToken} });
+        return RESTSrvc.getPromise( {method: 'GET', url: $rootScope.getServerString() + '/logout', headers: {'Authorization' : baseAuthToken} });
       },
 
     getLanguageList:
     function(baseAuthToken) {
-      return RESTSrvc.getPromise( {method: 'GET', url: $rootScope.protocol + $rootScope.server + ":" + $rootScope.port + "/" + $rootScope.webapp + '/info', headers: {'Authorization' : baseAuthToken} });
+      return RESTSrvc.getPromise( {method: 'GET', url: $rootScope.getServerString() + '/info', headers: {'Authorization' : baseAuthToken} });
     }
   }
 }

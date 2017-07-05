@@ -11,6 +11,14 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
         document.cookie = "CSPWSERVERID" + "=; Path=" + $root.webapp + "; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
     }
 
+    $root.getServerString = function() {
+        var serverString = $root.protocol + $root.server +
+                           (($root.port) ? (":" + $root.port) : '') +
+                           "/" + $root.webapp;
+
+        return serverString;
+    }
+
 /*===============================================================
                        VARIABLES INITIALIZATION
 ===============================================================*/
@@ -21,7 +29,7 @@ function MainCtrl($s, $state, $cookies, FormSrvc, SessionSrvc, UtilSrvc, $timeou
     $root.port = config.port || location.port;
     $root.webapp = config.webapp || "forms";
 
-    if (!config.server || !config.port || !config.webapp) {
+    if (!config.server || !config.webapp) {
         clearCookies();
     }
 

@@ -240,6 +240,22 @@ app.directive('ngCustomField', function ($compile, $rootScope) {
                                '</div>';
                     }
                 }
+            case '%Library.VarString':
+                if (!field.readonly) {
+                    return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
+                                '<label>' + field.displayName + '</label>' +
+                                '<div class="ui input" style="vertical-align: top;">' +
+                                   '<textarea name="' + field.name +'"  ng-model="obj[\'' + field.name + '\']">' + 
+                                '</div>' +
+                            '</div>';
+                } else {
+                    return '<div class="ui sixteen wide' + ((field.required) ? ' required' : '') + ' field">' +
+                                '<label>' + field.displayName + '</label>' +
+                                '<div class="ui input" style="vertical-align: top;">' +
+                                   '<textarea name="' + field.name +'"  ng-model="obj[\'' + field.name + '\']">' + 
+                                '</div>' +
+                            '</div>';
+                }
             case '%Library.Date':
                 if (!field.readonly) {
                     return '<div class="ui four wide' + ((field.required) ? ' required' : '') + ' field">' +
